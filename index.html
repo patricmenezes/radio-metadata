@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Metadados da Música</title>
-    <!-- Forçar não usar cache -->
-    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, post-check=0, pre-check=0" />
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -44,28 +42,32 @@
     <script>
         // Função para obter e exibir os metadados
         async function obterMetadados() {
-            const timestamp = new Date().getTime(); // Adiciona um parâmetro timestamp único para evitar cache
-            const url = `https://raw.githubusercontent.com/patricmenezes/radio-metadata/main/metadados.json?${timestamp}`;
-            
-            const response = await fetch(url);
-            if (response.ok) {
-                const dados = await response.json();
-                
-                // Preencher as informações da música na página
-                document.getElementById('titulo').innerText = 'Título: ' + dados.titulo;
-                document.getElementById('artista').innerText = 'Artista: ' + dados.artista;
-                document.getElementById('album').innerText = 'Álbum: ' + dados.album;
-                document.getElementById('ano').innerText = 'Ano: ' + dados.ano;
-                
-                // Se houver capa, exibir
-                const capa = dados.capa;
-                if (capa) {
-                    document.getElementById('capa').src = capa;
+            const timestamp = new Date().getTime(); // Gera um valor único para cada requisição
+            const url = `https://raw.githubusercontent.com/patricmenezes/radio-metadata/main/metadados.json?timestamp=${timestamp}`;  // Usa o timestamp como parâmetro
+
+            try {
+                const response = await fetch(url);
+                if (response.ok) {
+                    const dados = await response.json();
+                    
+                    // Preencher as informações da música na página
+                    document.getElementById('titulo').innerText = 'Título: ' + dados.titulo;
+                    document.getElementById('artista').innerText = 'Artista: ' + dados.artista;
+                    document.getElementById('album').innerText = 'Álbum: ' + dados.album;
+                    document.getElementById('ano').innerText = 'Ano: ' + dados.ano;
+                    
+                    // Se houver capa, exibir
+                    const capa = dados.capa;
+                    if (capa) {
+                        document.getElementById('capa').src = capa;
+                    } else {
+                        document.getElementById('capa').style.display = 'none'; // Esconder imagem se não houver
+                    }
                 } else {
-                    document.getElementById('capa').style.display = 'none'; // Esconder imagem se não houver
+                    console.error('Erro ao buscar metadados.');
                 }
-            } else {
-                console.error('Erro ao buscar metadados.');
+            } catch (err) {
+                console.error('Erro ao carregar os metadados:', err);
             }
         }
 
