@@ -112,17 +112,17 @@
 <body>
   <!-- Logo à esquerda -->
      <div class="player-footer">
-        <img src="https://darkslategray-wolverine-758610.hostingersite.com/wp-content/uploads/2025/03/Logo-PopFi-site.png" 
+        <img src="https://popfi.online/wp-content/uploads/2025/03/POPFI-LOGO-COM-PALETA-300.png" 
              class="logo" alt="Logo PopFi">
 
     <div class="player-footer">
         <div class="player-controls">
-            <img src="https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.arrow1.webp" 
+            <img src="https://popfi.online/public_html/player/q.arrow1.webp" 
                  class="icon" id="playPause" onclick="togglePlay()" 
                  onmouseover="this.src=playMouseOverSrc" 
                  onmouseout="this.src=playMouseOutSrc">
             
-            <img src="https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.volume100.webp" 
+            <img src="https://popfi.online/public_html/player/q.volume100.webp" 
                  class="icon" id="volumeIcon" onclick="toggleVolumeSlider()">
         </div>
         <div class="text">
@@ -151,20 +151,20 @@
         let volumeIcon = document.getElementById("volumeIcon");
         let modal = document.getElementById("modal");
         let modalImg = document.getElementById("modalImg");
-        let playMouseOverSrc = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.arrow2.webp";
-        let playMouseOutSrc = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.arrow1.webp";
+        let playMouseOverSrc = "https://popfi.online/public_html/player/q.arrow2.webp";
+        let playMouseOutSrc = "https://popfi.online/public_html/player/q.arrow1.webp";
 
         function togglePlay() {
             if (audio.paused) {
                 audio.play();
-                playPause.src = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.player1.webp";
-                playMouseOverSrc = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.player2.webp";
-                playMouseOutSrc = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.player1.webp";
+                playPause.src = "https://popfi.online/public_html/player/q.player1.webp";
+                playMouseOverSrc = "https://popfi.online/public_html/player/q.player2.webp";
+                playMouseOutSrc = "https://popfi.online/public_html/player/q.player1.webp";
             } else {
                 audio.pause();
-                playPause.src = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.arrow1.webp";
-                playMouseOverSrc = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.arrow2.webp";
-                playMouseOutSrc = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/q.arrow1.webp";
+                playPause.src = "https://popfi.online/public_html/player/q.arrow1.webp";
+                playMouseOverSrc = "https://popfi.online/public_html/player/q.arrow2.webp";
+                playMouseOutSrc = "https://popfi.online/public_html/player/q.arrow1.webp";
             }
         }
 
@@ -179,7 +179,7 @@
         }
 
         function atualizarIconeVolume(valor) {
-            let caminhoBase = "https://darkslategray-wolverine-758610.hostingersite.com/public_html/player/";
+            let caminhoBase = "https://https://popfi.online/public_html/player/";
             if (valor == 0) {
                 volumeIcon.src = caminhoBase + "q.volume0.webp";
             } else if (valor > 0 && valor <= 0.25) {
