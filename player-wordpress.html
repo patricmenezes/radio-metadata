@@ -117,19 +117,19 @@
 
     <div class="player-footer">
         <div class="player-controls">
-            <img src="https://popfi.online/public_html/player/q.arrow1.webp" 
+            <img src="https://popfi.online/public_html/jazler-popfi/player/q.arrow1.webp" 
                  class="icon" id="playPause" onclick="togglePlay()" 
                  onmouseover="this.src=playMouseOverSrc" 
                  onmouseout="this.src=playMouseOutSrc">
             
-            <img src="https://popfi.online/public_html/player/q.volume100.webp" 
+            <img src="https://popfi.online/public_html/jazler-popfi/player/q.volume100.webp" 
                  class="icon" id="volumeIcon" onclick="toggleVolumeSlider()">
         </div>
         <div class="text">
             <p class="titulo" id="play_titulo">Carregando...</p>
             <p class="artista" id="play_artista">Carregando...</p>
         </div>
-        <img src="https://popfi.online/public_html/json/cover_now.webp" 
+        <img src="https://popfi.online/public_html/jazler-popfi/json/cover_now.webp" 
              class="cover" id="play_capa" onclick="abrirModal()">
         
         <div class="volume-container" id="volumeContainer">
@@ -151,20 +151,20 @@
         let volumeIcon = document.getElementById("volumeIcon");
         let modal = document.getElementById("modal");
         let modalImg = document.getElementById("modalImg");
-        let playMouseOverSrc = "https://popfi.online/public_html/player/q.arrow2.webp";
-        let playMouseOutSrc = "https://popfi.online/public_html/player/q.arrow1.webp";
+        let playMouseOverSrc = "https://popfi.online/public_html/jazler-popfi/player/q.arrow2.webp";
+        let playMouseOutSrc = "https://popfi.online/public_html/jazler-popfi/player/q.arrow1.webp";
 
         function togglePlay() {
             if (audio.paused) {
                 audio.play();
-                playPause.src = "https://popfi.online/public_html/player/q.player1.webp";
-                playMouseOverSrc = "https://popfi.online/public_html/player/q.player2.webp";
-                playMouseOutSrc = "https://popfi.online/public_html/player/q.player1.webp";
+                playPause.src = "https://popfi.online/public_html/jazler-popfi/player/q.player1.webp";
+                playMouseOverSrc = "https://popfi.online/public_html/jazler-popfi/player/q.player2.webp";
+                playMouseOutSrc = "https://popfi.online/public_html/jazler-popfi/player/q.player1.webp";
             } else {
                 audio.pause();
-                playPause.src = "https://popfi.online/public_html/player/q.arrow1.webp";
-                playMouseOverSrc = "https://popfi.online/public_html/player/q.arrow2.webp";
-                playMouseOutSrc = "https://popfi.online/public_html/player/q.arrow1.webp";
+                playPause.src = "https://popfi.online/public_html/jazler-popfi/player/q.arrow1.webp";
+                playMouseOverSrc = "https://popfi.online/public_html/jazler-popfi/player/q.arrow2.webp";
+                playMouseOutSrc = "https://popfi.online/public_html/jazler-popfi/player/q.arrow1.webp";
             }
         }
 
@@ -179,7 +179,7 @@
         }
 
         function atualizarIconeVolume(valor) {
-            let caminhoBase = "https://popfi.online/public_html/player/";
+            let caminhoBase = "https://popfi.online/public_html/jazler-popfi/player/";
             if (valor == 0) {
                 volumeIcon.src = caminhoBase + "q.volume0.webp";
             } else if (valor > 0 && valor <= 0.25) {
