@@ -1,4 +1,4 @@
-import os 
+import os
 import json
 import difflib
 from ftplib import FTP, error_perm
@@ -6,16 +6,22 @@ from mutagen.mp3 import MP3
 from mutagen.id3 import ID3, APIC
 from PIL import Image
 from io import BytesIO
+from datetime import datetime  # Importa a biblioteca datetime
 
 # Configurações locais
 JAZLER_METADATA_FILE = r"C:\\Jazler RadioStar 2\\Exports\\NowOnAir.txt"
 MUSIC_FOLDER = r"C:\\P\\MUSICAS"
 
 # Configurações do FTP
-
+FTP_HOST = "ftp://45.152.46.69"
+FTP_USER = "u515153717"
+FTP_PASS = "Popfi-2025"
+FTP_PORT = 21
+FTP_COVERS_DIR = "/domains/popfi.online/public_html/popfi-player/covers"
+FTP_JSON_DIR = "/domains/popfi.online/public_html/popfi-player/json"
 
 # URL base para as capas
-COVER_URL_BASE = "https://popfi.online/public_html/covers/"
+COVER_URL_BASE = "https://popfi.online/popfi-player/covers/"
 
 def ler_nome_musica():
     """Lê o nome da música atual do arquivo do Jazler."""
@@ -40,14 +46,16 @@ def encontrar_arquivo_musica(nome_musica):
         return None
 
 def extrair_metadados(mp3_file):
-    """Extrai título, artista e capa da música."""
+    """Extrai título, artista, álbum, duração e capa da música."""
     try:
         print(f"🔍 Extraindo metadados de {mp3_file}...")
         audio = MP3(mp3_file, ID3=ID3)
 
         titulo = audio.tags.get("TIT2", ["Desconhecido"])[0]
         artista = audio.tags.get("TPE1", ["Desconhecido"])[0]
+        album = audio.tags.get("TALB", ["Desconhecido"])[0]  # Inclui o álbum
         ano = str(audio.tags.get("TDRC", ["Desconhecido"])[0])[:4]
+        duracao = audio.info.length  # Duração da música em segundos
         capa_nome = f"{artista} - {titulo}.webp".replace("/", "_").replace("\\", "_")
         
         for tag in audio.tags.values():
@@ -58,13 +66,15 @@ def extrair_metadados(mp3_file):
                 return {
                     "titulo": titulo,
                     "artista": artista,
+                    "album": album,  # Inclui o álbum
                     "ano": ano,
                     "capa_nome": capa_nome,
                     "capa_data": output.getvalue(),
-                    "capa_url": f"{COVER_URL_BASE}{capa_nome}"
+                    "capa_url": f"{COVER_URL_BASE}{capa_nome}",
+                    "duracao": duracao  # Inclui a duração da música
                 }
         
-        return {"titulo": titulo, "artista": artista, "ano": ano, "capa_nome": None, "capa_data": None, "capa_url": None}
+        return {"titulo": titulo, "artista": artista, "album": album, "ano": ano, "capa_nome": None, "capa_data": None, "capa_url": None, "duracao": duracao}
     except Exception as e:
         print(f"❌ Erro ao extrair metadados: {e}")
         return None
@@ -88,7 +98,7 @@ def enviar_para_ftp(ftp, arquivo_nome, arquivo_data, diretorio):
 def main():
     """Processo principal para capturar metadados e enviá-los ao FTP."""
     print("🎬 Iniciando processo...")
-    
+
     nome_musica = ler_nome_musica()
     if not nome_musica:
         print("❌ Nenhuma música em reprodução encontrada.")
@@ -104,6 +114,9 @@ def main():
     if not metadata:
         return
 
+    # Adiciona a hora de geração ao JSON
+    hora_geracao = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
     with FTP() as ftp:
         ftp.connect(FTP_HOST, FTP_PORT)
         ftp.login(FTP_USER, FTP_PASS)
@@ -115,14 +128,11 @@ def main():
             "detalhado": {
                 "titulo": metadata["titulo"],
                 "artista": metadata["artista"],
-                "album": metadata.get("album", "Desconhecido"),
+                "album": metadata["album"],
                 "ano": metadata["ano"],
-                "capa": metadata["capa_url"]
-            },
-            "simples": {
-                "titulo": metadata["titulo"],
-                "artista": metadata["artista"],
-                "capa": metadata["capa_url"]
+                "capa": metadata["capa_url"],
+                "duracao": metadata["duracao"],  # Inclui a duração para o buffer
+                "hora_geracao": hora_geracao  # Inclui a hora de geração
             }
         }
         json_bytes = json.dumps(json_data, ensure_ascii=False, indent=4).encode("utf-8")
