@@ -211,12 +211,18 @@
         }
 
         function abrirModal() {
-            modal.style.display = "flex";
-            modalImg.src = document.getElementById("play_capa").src;
-            modalTitulo.innerText = "Título: " + document.getElementById("play_titulo").innerText;
-            modalArtista.innerText = "Artista: " + document.getElementById("play_artista").innerText;
-            modalAlbum.innerText = "Álbum: " + document.getElementById("play_album").innerText;
-            modalAno.innerText = "Ano: " + document.getElementById("play_ano").innerText;
+            // Fazer a requisição para pegar os dados diretamente do JSON
+            fetch('https://popfi.online/popfi-player/json/nowplaying.json', { cache: "no-cache" })
+                .then(response => response.json())
+                .then(data => {
+                    modal.style.display = "flex";
+                    modalImg.src = data.detalhado.capa; // Imagem da capa
+                    modalTitulo.innerText = "Título: " + data.detalhado.titulo;
+                    modalArtista.innerText = "Artista: " + data.detalhado.artista;
+                    modalAlbum.innerText = "Álbum: " + (data.detalhado.album || "Desconhecido");
+                    modalAno.innerText = "Ano: " + (data.detalhado.ano || "Desconhecido");
+                })
+                .catch(error => console.log('Erro ao buscar os dados:', error));
         }
 
         function fecharModal() {
