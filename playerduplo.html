@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Player de Áudio Shoutcast</title>
+    <style>
+        /* Seu estilo permanece igual, sem alteração */
+    </style>
+</head>
+<body>
+    <div class="player-footer">
+        <img src="https://popfi.online/wp-content/uploads/2025/03/text1970-4-8-89-9-7.png" 
+             class="logo" alt="Logo PopFi">
+        <div class="player-controls">
+            <img src="https://popfi.online/popfi-player/player/q.arrow1.webp" 
+                 class="icon" id="playPause1" onclick="togglePlay(1)" 
+                 onmouseover="this.src=playMouseOverSrc" 
+                 onmouseout="this.src=playMouseOutSrc">
+            
+            <img src="https://popfi.online/popfi-player/player/q.volume100.webp" 
+                 class="icon" id="volumeIcon1" onclick="toggleVolumeSlider()">
+        </div>
+        <div class="text">
+            <p class="titulo" id="play_titulo1">Carregando...</p>
+            <p class="artista" id="play_artista1">Carregando...</p>
+        </div>
+        <img src="https://popfi.online/popfi-player/covers/default.webp" 
+             class="cover" id="play_capa1" onclick="abrirModal()">
+    </div>
+
+    <div class="player-footer">
+        <img src="https://popfi.online/wp-content/uploads/2025/03/text1970-4-8-89-9-7.png" 
+             class="logo" alt="Logo PopFi">
+        <div class="player-controls">
+            <img src="https://popfi.online/popfi-player/player/q.arrow1.webp" 
+                 class="icon" id="playPause2" onclick="togglePlay(2)" 
+                 onmouseover="this.src=playMouseOverSrc" 
+                 onmouseout="this.src=playMouseOutSrc">
+            
+            <img src="https://popfi.online/popfi-player/player/q.volume100.webp" 
+                 class="icon" id="volumeIcon2" onclick="toggleVolumeSlider()">
+        </div>
+        <div class="text">
+            <p class="titulo" id="play_titulo2">Carregando...</p>
+            <p class="artista" id="play_artista2">Carregando...</p>
+        </div>
+        <img src="https://popfi.online/popfi-player/covers/default.webp" 
+             class="cover" id="play_capa2" onclick="abrirModal()">
+    </div>
+
+    <audio id="audio1" src="https://cast3.midiazdx.com.br:7154/;stream.mp3"></audio>
+    <audio id="audio2" src="https://cast3.midiazdx.com.br:7154/;stream.mp3"></audio>
+
+    <script>
+        function atualizarPlayer(playerId) {
+            fetch("https://popfi.online/popfi-player/json/nowplaying.json")
+                .then(response => response.json())
+                .then(data => {
+                    if (playerId === 1) {
+                        document.getElementById("play_titulo1").textContent = data.titulo;
+                        document.getElementById("play_artista1").textContent = data.artista;
+                        document.getElementById("play_capa1").src = data.capa;
+                    } else if (playerId === 2) {
+                        document.getElementById("play_titulo2").textContent = data.titulo;
+                        document.getElementById("play_artista2").textContent = data.artista;
+                        document.getElementById("play_capa2").src = data.capa;
+                    }
+                })
+                .catch(error => console.error("Erro ao buscar dados da música:", error));
+        }
+
+        function togglePlay(playerId) {
+            const audio = document.getElementById(`audio${playerId}`);
+            const playPauseIcon = document.getElementById(`playPause${playerId}`);
+
+            if (audio.paused) {
+                audio.play();
+                playPauseIcon.src = "https://popfi.online/popfi-player/player/q.player1.webp"; // Ícone de pausa
+            } else {
+                audio.pause();
+                playPauseIcon.src = "https://popfi.online/popfi-player/player/q.arrow1.webp"; // Ícone de play
+            }
+        }
+
+        // Atualiza os players a cada 5 segundos
+        setInterval(() => {
+            atualizarPlayer(1);
+            atualizarPlayer(2);
+        }, 5000);
+        
+        // Atualiza imediatamente ao carregar a página
+        atualizarPlayer(1);
+        atualizarPlayer(2);
+    </script>
+</body>
+</html>
